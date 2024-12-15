@@ -20,3 +20,31 @@ code {
 .text-shadow {
   text-shadow: 4px 4px 4px rgba(0, 0, 0, 1);
 }
+
+@keyframes floatAnimation {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.floating-star {
+  animation: floatAnimation 2s ease-in-out infinite;
+}
+
+
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Smooch+Sans:wght@100..900&display=swap');
+
+.font-be-vietnam {
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+.font-smooch-sans {
+  font-family: 'Smooch Sans', sans-serif;
+}
