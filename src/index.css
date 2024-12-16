@@ -25,7 +25,7 @@ code {
   0% {
     transform: translateY(0);
   }
-  50% {
+  76% {
     transform: translateY(-10px);
   }
   100% {
@@ -42,7 +42,7 @@ code {
   0% {
     transform: translateY(0);
   }
-  50% {
+  47% {
     transform: translateY(20px);
   }
   100% {
@@ -60,7 +60,7 @@ code {
     transform: translateY(0);
     transform: translateX(0);
   }
-  50% {
+  25% {
     transform: translateY(-40px);
     transform: translateX(-10px);
   }
