@@ -553,7 +553,7 @@ const App = () => {
           <img
             alt="hole"
             src="/images/holeimg.png"
-            className="max-w-[80%] max-h-[50vh] object-contain"
+            className="md:max-w-[80%] md:max-h-[50vh] max-w-[40%] object-contain"
           />
         </div>
 
@@ -797,6 +797,15 @@ const App = () => {
             </div>
           </div>
         )}
+      </div>
+
+      {/*DIV 11*/}
+      <div
+        className="bg-[#080E0C] bg-cover bg-center font-be-vietnam flex items-center justify-center flex-row relative overflow-hidden px-12"
+        style={{ backgroundImage: "url('/images/crossBackground.png')" }}
+      >
+        {" "}
+        <img src="/images/nftconnectiologo.png" alt="logo" className="h-80" />
       </div>
     </>
   );

@@ -114,3 +114,12 @@ code {
 .font-smooch-sans {
   font-family: 'Smooch Sans', sans-serif;
 }
+
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE ve Edge için */
+  scrollbar-width: none;     /* Firefox için */
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari ve diğer WebKit tabanlı tarayıcılar için */
+}
