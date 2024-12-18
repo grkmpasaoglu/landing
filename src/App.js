@@ -6,6 +6,40 @@ const App = () => {
   const [hoveredCard, setHoveredCard] = useState(null);
   const sliderRef = useRef(null);
   const videoRefs = useRef({});
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef(null);
+  const topVectorRef = useRef(null);
+  const bottomVectorRef = useRef(null);
+  const leftTopRef = useRef(null);
+  const rightDownRef = useRef(null);
+  const vector13Ref = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+          } else {
+            setIsVisible(false);
+          }
+        });
+      },
+      {
+        threshold: 0.5, // Trigger when at least 10% of the div is visible
+      }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
 
   useEffect(() => {
     const slider = sliderRef.current;
@@ -228,6 +262,28 @@ const App = () => {
     };
   }, []);
 
+  const [opacity, setOpacity] = useState(1); // Başlangıçta opaklık tam
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const visibility = entry.intersectionRatio; // Görünürlük oranını alıyoruz
+        setOpacity(1 - visibility); // Görünürlük arttıkça opaklık azalacak, 1'den 0'a doğru
+      },
+      { threshold: Array.from({ length: 101 }, (_, i) => i / 100) } // 0 ile 1 arasında her 0.01'lik değeri ekliyoruz
+    );
+
+    if (div7Ref.current) {
+      observer.observe(div7Ref.current);
+    }
+
+    return () => {
+      if (div7Ref.current) {
+        observer.unobserve(div7Ref.current);
+      }
+    };
+  }, []);
+
   return (
     <>
       {/* DIV 1*/}
@@ -356,7 +412,7 @@ const App = () => {
       {/* DIV 3*/}
       <div
         ref={div3Ref}
-        className="bg-[#080E0C] bg-cover bg-center h-screen p-4 flex flex-col md:flex-row items-center justify-center font-be-vietnam"
+        className="bg-[#091310] bg-cover bg-center h-screen p-4 flex flex-col md:flex-row items-center justify-center font-be-vietnam"
         style={{ backgroundImage: "url('/images/backgroundLines.png')" }}
       >
         {/* Left Section (Video and Background Combination) */}
@@ -419,7 +475,7 @@ const App = () => {
 
       {/* DIV 4*/}
       <div
-        className="bg-[#080E0C] bg-cover bg-center h-screen p-4 flex flex-col md:flex-row items-center justify-evenly font-be-vietnam relative"
+        className="bg-[#091310] bg-cover bg-center h-screen p-4 flex flex-col md:flex-row items-center justify-evenly font-be-vietnam relative"
         style={{ backgroundImage: "url('/images/backgroundLines.png')" }}
       >
         <img
@@ -455,7 +511,7 @@ const App = () => {
       {/*DIV 5*/}
       <div
         ref={div5Ref}
-        className="bg-[#080E0C] bg-cover bg-center h-screen font-be-vietnam flex items-center justify-center flex-col relative overflow-hidden"
+        className="bg-[#091310] bg-cover bg-center h-screen font-be-vietnam flex items-center justify-center flex-col relative overflow-hidden"
         style={{ backgroundImage: "url('/images/backgroundLines.png')" }}
       >
         <img
@@ -497,6 +553,7 @@ const App = () => {
 
       {/*DIV 6*/}
       <div
+        ref={sectionRef}
         className="bg-[#080E0C] bg-cover bg-center h-screen p-12 flex flex-col md:flex-row items-center justify-evenly font-be-vietnam relative"
         style={{ backgroundImage: "url('/images/crossBackground.png')" }}
       >
@@ -515,9 +572,13 @@ const App = () => {
         <div className="w-full md:mb-0 mb-32 md:w-1/2 text-white text-center md:text-left px-4 relative h-96 flex flex-col items-center md:items-start justify-center md:block">
           {/* Top vector image */}
           <img
+            ref={topVectorRef}
             src="/images/vector20.png"
             alt="Top vector"
-            className="absolute -top-5 w-full z-50 "
+            className={`absolute transition-all duration-700 ease-out 
+            ${
+              isVisible ? "top-0 opacity-100" : "-top-96 opacity-0"
+            } w-full z-50`}
           />
 
           {/* Text content */}
@@ -535,9 +596,13 @@ const App = () => {
 
           {/* Bottom vector image */}
           <img
+            ref={bottomVectorRef}
             src="/images/vector22.png"
             alt="Bottom vector"
-            className="absolute -bottom-5 w-full z-50"
+            className={`absolute transition-all duration-700 ease-out 
+            ${
+              isVisible ? "bottom-0 opacity-100" : "-bottom-96 opacity-0"
+            } w-full z-50`}
           />
         </div>
       </div>
@@ -545,9 +610,16 @@ const App = () => {
       {/*DIV 7*/}
       <div
         ref={div7Ref}
-        className="bg-[#080E0C] bg-cover bg-center min-h-screen font-be-vietnam flex flex-col md:flex-row justify-center items-center"
-        style={{ backgroundImage: "url('/images/starsBg.png')" }}
+        className="relative bg-black bg-cover bg-center min-h-screen font-be-vietnam flex flex-col md:flex-row justify-center items-center"
+        style={{
+          backgroundImage: "url('/images/starsBg.png')",
+        }}
       >
+        {/* Background Overlay with reduced opacity */}
+        <div
+          className="absolute inset-0 bg-black z-0"
+          style={{ opacity }} // Opaklık değeri 1'den 0'a doğru azalacak
+        ></div>
         {/* Mobile Image - Shown on top for mobile, hidden on desktop */}
         <div className="md:hidden w-full flex items-center justify-center py-8">
           <img
@@ -558,7 +630,7 @@ const App = () => {
         </div>
 
         {/* Text Content */}
-        <div className="w-full md:w-7/12 px-6 md:px-24 py-12 md:py-24 text-center md:text-justify flex flex-col justify-center">
+        <div className="relative z-10 w-full md:w-7/12 px-6 md:px-24 py-12 md:py-24 text-center md:text-justify flex flex-col justify-center">
           <h1 className="font-bold text-3xl md:text-5xl bg-gradient-to-r from-[#97F46A] to-[#0C5E15] text-transparent bg-clip-text md:text-left text-center md:mr-8 pb-2 mb-4 md:mb-7">
             Bilgisayarı açmayı <br /> bilmiyor olmanız bile önemli <br /> değil;
           </h1>
@@ -688,11 +760,12 @@ const App = () => {
 
       {/*DIV 10*/}
       <div
+        ref={sectionRef}
         className="bg-[#080E0C] bg-cover bg-center h-screen font-be-vietnam flex items-center justify-center flex-col relative overflow-hidden"
         style={{ backgroundImage: "url('/images/crossBackground.png')" }}
       >
         <div className="w-full h-2/5 flex flex-col lg:flex-row justify-evenly items-center px-8">
-          <div className="flex flex-col justify-center w-3/5 relative">
+          <div className="flex flex-col justify-center w-2/5 relative">
             <h1 className="text-3xl md:text-5xl lg:text-7xl text-center lg:text-left font-bold mb-4 text-[#D9FFDE]">
               Yolculuğa <br /> başla !
             </h1>
@@ -703,18 +776,46 @@ const App = () => {
 
             {/* Top Left Image */}
             <img
+              ref={leftTopRef}
               src="/images/leftTop.png"
               alt="Left Top"
-              className="absolute top-0 left-0 lg:-top-5 lg:-left-12 w-10 h-10 md:w-16 md:h-16"
+              className={`absolute transition-all duration-700 ease-out
+              ${
+                isVisible
+                  ? "-top-2 -left-10 lg:-top-5 lg:-left-12 opacity-100"
+                  : "-top-96 -left-96 lg:-top-0 lg:-left-96 opacity-0"
+              } w-10 h-10 md:w-16 md:h-16`}
             />
 
             {/* Bottom Right Image */}
             <img
+              ref={rightDownRef}
+              style={{ marginRight: isVisible ? "330px" : "0px" }}
               src="/images/rightDown.png"
               alt="Right Down"
-              className="absolute -bottom-4 -right-4 lg:-bottom-6 lg:left-96 w-10 h-10 md:w-16 md:h-16"
+              className={`absolute transition-all duration-700 ease-out
+    ${
+      isVisible
+        ? "-bottom-0  lg:-bottom-6 lg:-right-16 opacity-100"
+        : "bottom-0 right-96 lg:-bottom-6 lg:-right-32 opacity-0"
+    } w-10 h-10 md:w-16 md:h-16`}
+            />
+
+            {/* Vector 13 Image */}
+            <img
+              ref={vector13Ref}
+              src="/images/vector13.png"
+              alt="Vector 13"
+              className={`absolute transition-all duration-700 ease-out hidden lg:block
+              ${
+                isVisible
+                  ? "-bottom-12 -left-12 opacity-100"
+                  : "-bottom-96 -left-12 opacity-0"
+              } w-8/12`}
             />
           </div>
+
+          <div className="w-1/5 hidden lg:block"></div>
 
           <div className="h-48 w-48">
             <img
