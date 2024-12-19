@@ -1,19 +1,104 @@
 import React, { useState, useEffect, useRef } from "react";
 import Typewriter from "typewriter-effect";
 
+// Constants
+const cards = [
+  {
+    id: 1,
+    title: "NFT Nedir?",
+    videoSrc: "/videos/LAND1.mp4",
+    description:
+      "NFT, dijital sanat ve koleksiyon ürünlerinin alınıp satılmasına olanak tanır.",
+  },
+  {
+    id: 2,
+    title: "Token Nedir?",
+    videoSrc: "/videos/LAND3.mp4",
+    description:
+      "Token, bir blockchain ağında değer taşır ve dijital varlıkları temsil eder.",
+  },
+  {
+    id: 3,
+    title: "Coin Nedir?",
+    videoSrc: "/videos/LAND4.mp4",
+    description:
+      "Coin, dijital para birimleri olup, genellikle bir blockchain üzerinde işlem yapar.",
+  },
+  {
+    id: 4,
+    title: "Blockchain Nedir?",
+    videoSrc: "/videos/LAND5.mp4",
+    description:
+      "Blockchain, merkezi olmayan, şeffaf ve güvenli bir dijital defter sistemidir.",
+  },
+  {
+    id: 5,
+    title: "Akıllı Kontrat Nedir?",
+    videoSrc: "/videos/LAND6.mp4",
+    description:
+      "Akıllı kontratlar, blok zincirinde otomatik olarak yürütülen dijital anlaşmalardır.",
+  },
+  {
+    id: 6,
+    title: "DeFi Nedir?",
+    videoSrc: "/videos/LAND10.mp4",
+    description:
+      "DeFi, finansal hizmetlerin merkeziyetsiz bir şekilde sunulmasını sağlayan bir platformdur.",
+  },
+  {
+    id: 7,
+    title: "Metaverse Nedir?",
+    videoSrc: "/videos/money.mp4",
+    description:
+      "Metaverse, sanal dünyalarda insanların etkileşimde bulunduğu dijital bir evrendir.",
+  },
+  {
+    id: 8,
+    title: "Kripto Madenciliği Nedir?",
+    videoSrc: "/videos/LAND11.mp4",
+    description:
+      "Kripto madenciliği, dijital para birimlerini üretmek ve işlemleri doğrulamak için yapılan bir işlemdir.",
+  },
+];
+
 const App = () => {
-  const [isPaused, setIsPaused] = useState(false);
-  const [hoveredCard, setHoveredCard] = useState(null);
+  // Refs
   const sliderRef = useRef(null);
   const videoRefs = useRef({});
-  const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef(null);
   const topVectorRef = useRef(null);
   const bottomVectorRef = useRef(null);
   const leftTopRef = useRef(null);
   const rightDownRef = useRef(null);
   const vector13Ref = useRef(null);
+  const div1Ref = useRef(null);
+  const div2Ref = useRef(null);
+  const div3Ref = useRef(null);
+  const div5Ref = useRef(null);
+  const div7Ref = useRef(null);
+  const div8Ref = useRef(null);
 
+  // States
+  const [isPaused, setIsPaused] = useState(false);
+  const [hoveredCard, setHoveredCard] = useState(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalDescription, setModalDescription] = useState("");
+  const [modalTitle, setModalTitle] = useState("");
+  const [opacity, setOpacity] = useState(1);
+  const [activeTypewriters, setActiveTypewriters] = useState({
+    div2: false,
+    div3: false,
+    div5: false,
+    div7: false,
+  });
+  const [paragraphAnimations, setParagraphAnimations] = useState({
+    paragraph1: false,
+    paragraph2: false,
+    paragraph3: false,
+  });
+
+  // Effects
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -25,9 +110,7 @@ const App = () => {
           }
         });
       },
-      {
-        threshold: 0.5, // Trigger when at least 10% of the div is visible
-      }
+      { threshold: 0.5 }
     );
 
     if (sectionRef.current) {
@@ -59,69 +142,125 @@ const App = () => {
     return () => clearInterval(scrollInterval);
   }, [isPaused]);
 
-  const cards = [
-    {
-      id: 1,
-      title: "NFT Nedir?",
-      videoSrc: "/videos/LAND1.mp4",
-      description:
-        "NFT, dijital sanat ve koleksiyon ürünlerinin alınıp satılmasına olanak tanır.",
-    },
-    {
-      id: 2,
-      title: "Token Nedir?",
-      videoSrc: "/videos/LAND3.mp4",
-      description:
-        "Token, bir blockchain ağında değer taşır ve dijital varlıkları temsil eder.",
-    },
-    {
-      id: 3,
-      title: "Coin Nedir?",
-      videoSrc: "/videos/LAND4.mp4",
-      description:
-        "Coin, dijital para birimleri olup, genellikle bir blockchain üzerinde işlem yapar.",
-    },
-    {
-      id: 4,
-      title: "Blockchain Nedir?",
-      videoSrc: "/videos/LAND5.mp4",
-      description:
-        "Blockchain, merkezi olmayan, şeffaf ve güvenli bir dijital defter sistemidir.",
-    },
-    {
-      id: 5,
-      title: "Akıllı Kontrat Nedir?",
-      videoSrc: "/videos/LAND6.mp4",
-      description:
-        "Akıllı kontratlar, blok zincirinde otomatik olarak yürütülen dijital anlaşmalardır.",
-    },
-    {
-      id: 6,
-      title: "DeFi Nedir?",
-      videoSrc: "/videos/LAND10.mp4",
-      description:
-        "DeFi, finansal hizmetlerin merkeziyetsiz bir şekilde sunulmasını sağlayan bir platformdur.",
-    },
-    {
-      id: 7,
-      title: "Metaverse Nedir?",
-      videoSrc: "/videos/money.mp4",
-      description:
-        "Metaverse, sanal dünyalarda insanların etkileşimde bulunduğu dijital bir evrendir.",
-    },
-    {
-      id: 8,
-      title: "Kripto Madenciliği Nedir?",
-      videoSrc: "/videos/LAND11.mp4",
-      description:
-        "Kripto madenciliği, dijital para birimlerini üretmek ve işlemleri doğrulamak için yapılan bir işlemdir.",
-    },
-  ];
+  useEffect(() => {
+    const observers = [];
+    const divRefs = [
+      { ref: div2Ref, key: "div2" },
+      { ref: div3Ref, key: "div3" },
+      { ref: div5Ref, key: "div5" },
+      { ref: div7Ref, key: "div7" },
+      { ref: div8Ref, key: "div8" },
+    ];
 
-  const [modalOpen, setModalOpen] = useState(false);
-  const [modalDescription, setModalDescription] = useState("");
-  const [modalTitle, setModalTitle] = useState("");
+    const createObserver = (ref, key) => {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              if (key.startsWith("div")) {
+                setActiveTypewriters((prev) => ({ ...prev, [key]: true }));
+              }
 
+              if (key === "div8") {
+                setTimeout(
+                  () =>
+                    setParagraphAnimations((prev) => ({
+                      ...prev,
+                      paragraph1: true,
+                    })),
+                  300
+                );
+                setTimeout(
+                  () =>
+                    setParagraphAnimations((prev) => ({
+                      ...prev,
+                      paragraph2: true,
+                    })),
+                  600
+                );
+                setTimeout(
+                  () =>
+                    setParagraphAnimations((prev) => ({
+                      ...prev,
+                      paragraph3: true,
+                    })),
+                  900
+                );
+              }
+            } else {
+              if (key.startsWith("div")) {
+                setActiveTypewriters((prev) => ({ ...prev, [key]: false }));
+              }
+
+              if (key === "div8") {
+                setParagraphAnimations({
+                  paragraph1: false,
+                  paragraph2: false,
+                  paragraph3: false,
+                });
+              }
+            }
+          });
+        },
+        { threshold: 0.1 }
+      );
+
+      if (ref.current) {
+        observer.observe(ref.current);
+      }
+
+      return observer;
+    };
+
+    divRefs.forEach(({ ref, key }) => {
+      const observer = createObserver(ref, key);
+      observers.push({ observer, ref: ref.current });
+    });
+
+    return () => {
+      observers.forEach(({ observer, ref }) => {
+        if (ref) {
+          observer.unobserve(ref);
+        }
+      });
+    };
+  }, []);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const visibility = entry.intersectionRatio;
+        setOpacity(1 - visibility);
+      },
+      { threshold: Array.from({ length: 101 }, (_, i) => i / 100) }
+    );
+
+    if (div7Ref.current) {
+      observer.observe(div7Ref.current);
+    }
+
+    return () => {
+      if (div7Ref.current) {
+        observer.unobserve(div7Ref.current);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = (e) => {
+      if (div1Ref.current) {
+        const div1Bounds = div1Ref.current.getBoundingClientRect();
+        if (div1Bounds.top === 0) {
+          e.preventDefault();
+        }
+      }
+    };
+
+    window.addEventListener("wheel", handleScroll, { passive: false });
+    return () => window.removeEventListener("wheel", handleScroll);
+  }, []);
+
+  // Event Handlers
   const handleModalOpen = (description, title) => {
     setModalDescription(description);
     setModalTitle(title);
@@ -149,140 +288,14 @@ const App = () => {
     }
   };
 
-  const [activeTypewriters, setActiveTypewriters] = useState({
-    div2: false,
-    div3: false,
-    div5: false,
-    div7: false,
-  });
-
-  // Add state for paragraph animations in div 8
-  const [paragraphAnimations, setParagraphAnimations] = useState({
-    paragraph1: false,
-    paragraph2: false,
-    paragraph3: false,
-  });
-
-  const div2Ref = useRef(null);
-  const div3Ref = useRef(null);
-  const div5Ref = useRef(null);
-  const div7Ref = useRef(null);
-  const div8Ref = useRef(null);
-
-  useEffect(() => {
-    const observers = [];
-    const divRefs = [
-      { ref: div2Ref, key: "div2" },
-      { ref: div3Ref, key: "div3" },
-      { ref: div5Ref, key: "div5" },
-      { ref: div7Ref, key: "div7" },
-      { ref: div8Ref, key: "div8" },
-    ];
-
-    const createObserver = (ref, key) => {
-      const observer = new IntersectionObserver(
-        (entries) => {
-          entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-              // Div is in view
-              if (key.startsWith("div")) {
-                setActiveTypewriters((prev) => ({ ...prev, [key]: true }));
-              }
-
-              // Special handling for div8 paragraphs
-              if (key === "div8") {
-                // Stagger paragraph animations
-                setTimeout(
-                  () =>
-                    setParagraphAnimations((prev) => ({
-                      ...prev,
-                      paragraph1: true,
-                    })),
-                  300
-                );
-                setTimeout(
-                  () =>
-                    setParagraphAnimations((prev) => ({
-                      ...prev,
-                      paragraph2: true,
-                    })),
-                  600
-                );
-                setTimeout(
-                  () =>
-                    setParagraphAnimations((prev) => ({
-                      ...prev,
-                      paragraph3: true,
-                    })),
-                  900
-                );
-              }
-            } else {
-              // Div is out of view
-              if (key.startsWith("div")) {
-                setActiveTypewriters((prev) => ({ ...prev, [key]: false }));
-              }
-
-              // Reset paragraph animations when div goes out of view
-              if (key === "div8") {
-                setParagraphAnimations({
-                  paragraph1: false,
-                  paragraph2: false,
-                  paragraph3: false,
-                });
-              }
-            }
-          });
-        },
-        {
-          threshold: 0.1, // Trigger when at least 10% of the div is visible
-        }
-      );
-
-      if (ref.current) {
-        observer.observe(ref.current);
-      }
-
-      return observer;
-    };
-
-    // Create observers for each div
-    divRefs.forEach(({ ref, key }) => {
-      const observer = createObserver(ref, key);
-      observers.push({ observer, ref: ref.current });
-    });
-
-    // Cleanup
-    return () => {
-      observers.forEach(({ observer, ref }) => {
-        if (ref) {
-          observer.unobserve(ref);
-        }
+  const handleExploreClick = () => {
+    if (div2Ref.current) {
+      div2Ref.current.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
       });
-    };
-  }, []);
-
-  const [opacity, setOpacity] = useState(1); // Başlangıçta opaklık tam
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        const visibility = entry.intersectionRatio; // Görünürlük oranını alıyoruz
-        setOpacity(1 - visibility); // Görünürlük arttıkça opaklık azalacak, 1'den 0'a doğru
-      },
-      { threshold: Array.from({ length: 101 }, (_, i) => i / 100) } // 0 ile 1 arasında her 0.01'lik değeri ekliyoruz
-    );
-
-    if (div7Ref.current) {
-      observer.observe(div7Ref.current);
     }
-
-    return () => {
-      if (div7Ref.current) {
-        observer.unobserve(div7Ref.current);
-      }
-    };
-  }, []);
+  };
 
   return (
     <>
@@ -310,6 +323,7 @@ const App = () => {
 
         {/* Button */}
         <button
+          onClick={handleExploreClick}
           className="absolute w-32 bottom-16 left-1/2 transform -translate-x-1/2 p-4 transition-all duration-300 hover:bottom-16 bg-gradient-to-r from-[#A1F96F] to-[#18B124] text-white font-semibold rounded-[10px] border-none cursor-pointer"
           style={{
             borderRadius: "0px 10px 0px 10px",
@@ -796,7 +810,7 @@ const App = () => {
               className={`absolute transition-all duration-700 ease-out
     ${
       isVisible
-        ? "-bottom-0  lg:-bottom-6 lg:-right-16 opacity-100"
+        ? "-bottom-0  lg:-bottom-6 lg:-right-16 -right-96 opacity-100"
         : "bottom-0 right-96 lg:-bottom-6 lg:-right-32 opacity-0"
     } w-10 h-10 md:w-16 md:h-16`}
             />
@@ -906,7 +920,7 @@ const App = () => {
         style={{ backgroundImage: "url('/images/crossBackground.png')" }}
       >
         {" "}
-        <img src="/images/nftconnectiologo.png" alt="logo" className="h-80" />
+        <img src="/images/nftconnectiologo.png" alt="logo" className="lg:h-80" />
       </div>
     </>
   );
